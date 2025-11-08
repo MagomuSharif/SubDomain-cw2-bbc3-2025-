@@ -34,7 +34,13 @@ class CustomersController extends Controller
         $customers->subject = $request->input('subject');
         $customers->message = $request->input('message');
         $customers->save();
-        return view('contact');
+        
+        if ($request->ajax()) {
+        return response('OK', 200)->header('Content-Type', 'text/plain');
+    }
+
+    // Fallback for non-AJAX form submissions
+    return redirect()->back()->with('success', 'Message sent successfully!');
     }
 
     /**
